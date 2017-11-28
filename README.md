@@ -1,12 +1,12 @@
-# neural-audio-style-transfer
+# time-domain-neural-audio-style-transfer
 
-NIPS2017 "Neural Audio Style Transfer" code repository
+NIPS2017 "Time Domain Neural Audio Style Transfer" code repository
 
 Parag K. Mital
 
 # Introduction
 
-  A [recently published method](https://github.com/DmitryUlyanov/neural-style-audio-tf) for audio style transfer has shown how to extend the process of image style transfer to audio.  This method synthesizes audio "content" and "style" independently using the magnitudes of a short time Fourier transform, shallow convolutional networks with randomly initialized filters, and iterative phase reconstruction with Griffin-Lim.  In this work, we explore whether it is possible to incorporate phase information into the stylization process, removing the need for phase reconstruction and opening up possibilities for real-time applications.  We build a variety of style transfer processes on neural networks including ones that incorporate phase information and ones that have been pretrained directly on time domain audio signals and show that it is possible to perform audio stylization without phase reconstruction by using the real, imaginary, and magnitude components of a Discrete Fourier Transform.
+  A recently published method for audio style transfer has shown how to extend the process of image style transfer to audio.  This method synthesizes audio "content" and "style" independently using the magnitudes of a short time Fourier transform, shallow convolutional networks with randomly initialized filters, and iterative phase reconstruction with Griffin-Lim.  In this work, we explore whether it is possible to directly optimize a time domain audio signal, removing the process of phase reconstruction and opening up possibilities for real-time applications and higher quality syntheses.  We explore a variety of style transfer processes on neural networks that operate directly on time domain audio signals and demonstrate one such network capable of audio stylization.
 
 # Installation
 
