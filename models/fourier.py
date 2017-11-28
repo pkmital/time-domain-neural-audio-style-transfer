@@ -3,6 +3,7 @@ import librosa
 import numpy as np
 from scipy.signal import hann
 import utils
+import argparse
 
 
 def chop(signal, hop_size=256, frame_size=512):
@@ -246,3 +247,34 @@ def run(content_fname,
     librosa.output.write_wav(output_fname, s, sr=sr)
     s = utils.limiter(s)
     librosa.output.write_wav(output_fname + '.limiter.wav', s, sr=sr)
+
+
+def batch(content_path, style_path, output_path, model):
+    content_files = glob.glob('{}/*.wav'.format(content_path))
+    style_files = glob.glob('{}/*.wav'.format(style_path))
+    for content_fname in content_files:
+        for style_fname in style_files:
+            output_fname = '{}/{}+{}.wav'.format(output_path,
+                                                 content_fname.split('/')[-1],
+                                                 style_fname.split('/')[-1])
+            if os.path.exists(output_fname):
+                continue
+            run(content_fname, style_fname, output_fname, model)
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-s', '--style', help='style file', required=True)
+    parser.add_argument('-c', '--content', help='content file', required=True)
+    parser.add_argument('-o', '--output', help='output file', required=True)
+    parser.add_argument(
+        '-m',
+        '--mode',
+        help='mode for training [single] or batch',
+        default='single')
+
+    args = vars(parser.parse_args())
+    if args['mode'] == 'single':
+        run(args['content'], args['style'], args['output'])
+    else:
+        batch(args['content'], args['style'], args['output'])

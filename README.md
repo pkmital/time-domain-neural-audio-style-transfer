@@ -40,3 +40,8 @@ python models/fourier.py -s /path/to/style/wavs/folder -c /path/to/content/wavs/
 # Audio Samples
 
 This repository also includes audio samples from Robert Thomas (`target/male-talking.wav`), music by Robert Thomas and Franky Redente (`corpus/robthomas*`), samples and music by John Tejada and Reggie Watts (`corpus/johntejada*`, `target/beat-box*`, `target/male-singing.wav`, `target/female-singing.wav`), and a sample by Ashwin Vaswani (`target/male-taal.wav`).  These clips were generously contributed to this work by their authors and are *licensed under a Creative Commons Attribution-NonCommercial 4.0 International License*.  That means these clips are not for commercial usage.  Further, any sharing of these clips must contain attribution to their authors, and must be shared under the same license.
+
+# Example Outputs
+
+The folder `examples` includes syntheses using the `models/fourier` module and the original Ulyanov network in `models/original`, and were created using the script in the root of the repo, `search.py`.
+`
