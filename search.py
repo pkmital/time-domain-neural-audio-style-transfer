@@ -40,82 +40,82 @@ def params():
 
 
 def batch(content_path, style_path, output_path):
-    content_files = [f for f in glob.glob('{}/*.wav'.format(content_path)) if 'female-talking' in f]
+    content_files = glob.glob('{}/*.wav'.format(content_path))
     style_files = glob.glob('{}/*.wav'.format(style_path))
     content_filename = np.random.choice(content_files)
     style_filename = np.random.choice(style_files)
-    for alpha in [0.05, 0.005]:
-        for n_fft in [4096]:
-            for n_layers in [1]:
-                for n_filters in [4096]:
-                    for hop_length in [256]:
-                        for k_w in [4, 8, 16]:
-                            # Run Fourier Model
-                            fname = get_path('fourier', output_path, content_filename, style_filename)
-                            output_filename = ('{},n_fft={},n_layers={},n_filters={},'
-                                               'hop_length={},alpha={},k_w={}.wav'.format(
-                                                   fname, n_fft, n_layers, n_filters, hop_length, alpha, k_w))
-                            print(output_filename)
-                            if not os.path.exists(output_filename):
-                                fourier.run(content_fname=content_filename,
-                                            style_fname=style_filename,
-                                            output_fname=output_filename,
-                                            n_fft=n_fft,
-                                            n_layers=n_layers,
-                                            n_filters=n_filters,
-                                            hop_length=hop_length,
-                                            alpha=alpha,
-                                            k_w=k_w)
-                            # # Run NSynth Encoder Model
-                            # output_filename = get_path('nsynth-encoder', output_path, content_filename,
-                            #                            style_filename)
-                            # output_filename = ('{},n_fft={},n_layers={},n_filters={},'
-                            #                    'hop_length={},alpha={},k_w={}.wav'.format(
-                            #                        fname, n_fft, n_layers, n_filters, hop_length, alpha, k_w))
-                            # if not os.path.exists(output_filename):
-                            #     nsynth.run(content_filename,
-                            #                style_filename,
-                            #                output_filename,
-                            #                model='encoder',
-                            #                n_fft=n_fft,
-                            #                n_layers=n_layers,
-                            #                n_filters=n_filters,
-                            #                hop_length=hop_length,
-                            #                alpha=alpha,
-                            #                k_w=k_w)
-                            # # Run NSynth Decoder Model
-                            # output_filename = get_path('wavenet-decoder', output_path, content_filename,
-                            #                            style_filename)
-                            # output_filename = ('{},n_fft={},n_layers={},n_filters={},'
-                            #                    'hop_length={},alpha={},k_w={}.wav'.format(
-                            #                        fname, n_fft, n_layers, n_filters, hop_length, alpha, k_w))
-                            # if not os.path.exists(output_filename):
-                            #     nsynth.run(content_filename,
-                            #                style_filename,
-                            #                output_filename,
-                            #                model='decoder',
-                            #                n_fft=n_fft,
-                            #                n_layers=n_layers,
-                            #                n_filters=n_filters,
-                            #                hop_length=hop_length,
-                            #                alpha=alpha,
-                            #                k_w=k_w)
-                            # Run Original Model
-                            fname = get_path('original', output_path, content_filename, style_filename)
-                            output_filename = ('{},n_fft={},n_layers={},n_filters={},'
-                                               'hop_length={},alpha={},k_w={}.wav'.format(
-                                                   fname, n_fft, n_layers, n_filters, hop_length, alpha, k_w))
-                            print(output_filename)
-                            if not os.path.exists(output_filename):
-                                original.run(content_filename,
-                                             style_filename,
-                                             output_filename,
-                                             n_fft=n_fft,
-                                             n_layers=n_layers,
-                                             n_filters=n_filters,
-                                             hop_length=hop_length,
-                                             alpha=alpha,
-                                             k_w=k_w)
+    alpha = np.random.choice(params()['alpha'])
+    n_fft = np.random.choice(params()['n_fft'])
+    n_layers = np.random.choice(params()['n_layers'])
+    n_filters = np.random.choice(params()['n_filters'])
+    hop_length = np.random.choice(params()['hop_length'])
+    k_w = np.random.choice(params()['k_w'])
+    # Run Fourier Model
+    fname = get_path('fourier', output_path, content_filename, style_filename)
+    output_filename = ('{},n_fft={},n_layers={},n_filters={},'
+                       'hop_length={},alpha={},k_w={}.wav'.format(
+                           fname, n_fft, n_layers, n_filters, hop_length, alpha, k_w))
+    print(output_filename)
+    if not os.path.exists(output_filename):
+        fourier.run(content_fname=content_filename,
+                    style_fname=style_filename,
+                    output_fname=output_filename,
+                    n_fft=n_fft,
+                    n_layers=n_layers,
+                    n_filters=n_filters,
+                    hop_length=hop_length,
+                    alpha=alpha,
+                    k_w=k_w)
+    # # Run NSynth Encoder Model
+    # output_filename = get_path('nsynth-encoder', output_path, content_filename,
+    #                            style_filename)
+    # output_filename = ('{},n_fft={},n_layers={},n_filters={},'
+    #                    'hop_length={},alpha={},k_w={}.wav'.format(
+    #                        fname, n_fft, n_layers, n_filters, hop_length, alpha, k_w))
+    # if not os.path.exists(output_filename):
+    #     nsynth.run(content_filename,
+    #                style_filename,
+    #                output_filename,
+    #                model='encoder',
+    #                n_fft=n_fft,
+    #                n_layers=n_layers,
+    #                n_filters=n_filters,
+    #                hop_length=hop_length,
+    #                alpha=alpha,
+    #                k_w=k_w)
+    # # Run NSynth Decoder Model
+    # output_filename = get_path('wavenet-decoder', output_path, content_filename,
+    #                            style_filename)
+    # output_filename = ('{},n_fft={},n_layers={},n_filters={},'
+    #                    'hop_length={},alpha={},k_w={}.wav'.format(
+    #                        fname, n_fft, n_layers, n_filters, hop_length, alpha, k_w))
+    # if not os.path.exists(output_filename):
+    #     nsynth.run(content_filename,
+    #                style_filename,
+    #                output_filename,
+    #                model='decoder',
+    #                n_fft=n_fft,
+    #                n_layers=n_layers,
+    #                n_filters=n_filters,
+    #                hop_length=hop_length,
+    #                alpha=alpha,
+    #                k_w=k_w)
+    # Run Original Model
+    fname = get_path('original', output_path, content_filename, style_filename)
+    output_filename = ('{},n_fft={},n_layers={},n_filters={},'
+                       'hop_length={},alpha={},k_w={}.wav'.format(
+                           fname, n_fft, n_layers, n_filters, hop_length, alpha, k_w))
+    print(output_filename)
+    if not os.path.exists(output_filename):
+        original.run(content_filename,
+                     style_filename,
+                     output_filename,
+                     n_fft=n_fft,
+                     n_layers=n_layers,
+                     n_filters=n_filters,
+                     hop_length=hop_length,
+                     alpha=alpha,
+                     k_w=k_w)
 
 
 if __name__ == '__main__':
