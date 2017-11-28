@@ -39,7 +39,7 @@ python models/fourier.py -s /path/to/style/wavs/folder -c /path/to/content/wavs/
 
 # Audio Samples
 
-This repository also includes audio samples from Robert Thomas (`target/male-talking.wav`), music by Robert Thomas and Franky Redente (`corpus/robthomas*`), samples and music by John Tejada and Reggie Watts (`corpus/johntejada*`, `target/beat-box*`, `target/male-singing.wav`, `target/female-singing.wav`), and a sample by Ashwin Vaswani (`target/male-taal.wav`).  These clips were generously contributed to this work by their authors and are *licensed under a Creative Commons Attribution-NonCommercial 4.0 International License*.  That means these clips are not for commercial usage.  Further, any sharing of these clips must contain attribution to their authors, and must be shared under the same license.
+This repository also includes audio samples from Robert Thomas (`target/male-talking.wav`), music by [Robert Thomas](http://robertthomassound.com/) and Franky Redente (`corpus/robthomas*`), samples and music by [John Tejada](http://www.paletterecordings.com/) and [Reggie Watts](http://reggiewatts.com/) (`corpus/johntejada*`, `target/beat-box*`, `target/male-singing.wav`, `target/female-singing.wav`), and one voice sample by [Ashwin Vaswani](https://www.ashwinvaswani.com/) (`target/male-taal.wav`).  These clips were generously contributed to this work by their authors and are *licensed under a Creative Commons Attribution-NonCommercial 4.0 International License*.  That means these clips are not for commercial usage.  Further, any sharing of these clips must contain attribution to their authors, and must be shared under the same license.
 
 # Example Outputs
 
