@@ -10,7 +10,7 @@
 %\usepackage{nips_2017}
 
 % to compile a camera-ready version, add the [final] option, e.g.:
-\usepackage{nips_2017}
+\usepackage[final,nonatbib]{nips_2017}
 
 \usepackage[utf8]{inputenc} % allow utf-8 input
 \usepackage[T1]{fontenc}    % use 8-bit T1 fonts
@@ -89,15 +89,15 @@ To understand better whether it is possible to perform audio stylization in the 
 % There have been a few investigations of audio style transfer employing magnitude representations, such as Ulyanov's original work and a follow-up work employing VGG \cite{Wyse2017}.  These models discard the phase information in favor of phase reconstruction.  As well, there have been further developments in neural networks capable of large scale audio classification such as \cite{Hershey2016}, though these are trained on magnitude representations and would also require phase reconstruction as part of a stylization process.  Perhaps most closely aligned is the work of NSynth \cite{Engel2017}, whose work is capable of taking as input a raw audio signal and allows for applications such as the blending of musical notes in a neural embedding space.  Though their work is capable of synthesizing raw audio from its embedding space, there is no separation of content and style, and thus they cannot be independently manipulated.
 
 % Speech synthesis techniques
-%TacoTron demonstrated a technique using ... 
-%In a similar vein, WaveNet, ... 
+%TacoTron demonstrated a technique using ...
+%In a similar vein, WaveNet, ...
 %NSynth incorporates a WaveNet decoder and includes an additional encoder, allowing one to encode a time domain audio signal using the encoding part of the network with 16 channels at 125x compression, and use these as biases during the WaveNet decoding.  The embedding space is capable of linearly mixing instruments in its embedding space, though has yet to be explored as a network for audio stylization where content and style are indepenently manipulated.
 
 % SampleRNN
 
 % Soundnet
 
-% VGG (Lonce Wyse, https://arxiv.org/pdf/1706.09559.pdf); 
+% VGG (Lonce Wyse, https://arxiv.org/pdf/1706.09559.pdf);
 
 % Zdenek Pruska
 
@@ -106,11 +106,11 @@ To understand better whether it is possible to perform audio stylization in the 
 % CycleGAN (https://gauthamzz.github.io/2017/09/23/AudioStyleTransfer/)
 
 
-\section{Experiments\footnote{Further details are described in the Supplementary Materials}}
+\section{Experiments}
 
 We explore a variety of computational graphs which use as their first operation a discrete Fourier transform in order to project an audio signal into its real and imaginary components.  We then explore manipulations on these components, including directly applying convolutional layers, or undergoing an additional transformation of the typical magnitude and phase components, as well as combinations of each these components.  For representing phase, we also explored using the original phase, the phase differential, and the unwrapped phase differentials.  From here, we apply the same techniques for stylization as described in \cite{Ulyanov2016}, except we no longer have to optimize a noisy magnitude input, and can instead optimize a time domain signal.  We also explore combinations of using content/style layers following the initial projections and after fully connected layers.
 
-We also explore two pre-trained networks: a pre-trained WaveNet decoder, and the encoder portion of an NSynth network as provided by Magenta \cite{Engel2017}, and look at the activations of each of these networks at different layers, much like the original image style networks did with VGG.  We also include Ulyanov's original network as a baseline, and report our results as seen through spectrograms and through listening.  Our code is also available online\footnote{https://github.com/pkmital/neural-audio-style-transfer}.
+We also explore two pre-trained networks: a pre-trained WaveNet decoder, and the encoder portion of an NSynth network as provided by Magenta \cite{Engel2017}, and look at the activations of each of these networks at different layers, much like the original image style networks did with VGG.  We also include Ulyanov's original network as a baseline, and report our results as seen through spectrograms and through listening.  Our code is also available online\footnote{https://github.com/pkmital/neural-audio-style-transfer}\footnote{Further details are described in the Supplementary Materials}.
 
 \section{Results}
 
@@ -124,25 +124,96 @@ Every other combination of input manipulations we tried tended towards a white n
 
 This work explores neural audio style transfer of a time domain audio signal.  Of these networks, only two produced any meaningful results: the magnitude and unwrapped phase network, which produced distinctly noisier syntheses, and the real, imaginary, and magnitude network which was capable of resembling both the content and style sources in a similar quality to Ulyanov's original approach, though with interesting differences.  It was especially surprising that we were unable to stylize with NSynth's encoder or decoder, though this is perhaps to due to the limited number of combinations of layers and possible activations we explored, and is worth exploring more in the future.
 
-% Style transfer, like deep dream and its predecessor works in visualizing gradient activations, through exploration have the potential to enable us to understand representations created by neural networks.  Through synthesis, and exploring the representations at each level of a neural network, we can start to gain insights into what sorts of representations if any are created by a network.  However, to date, very few explorations of audio networks for the purpose of dreaming or stylization have been done.  
+% Style transfer, like deep dream and its predecessor works in visualizing gradient activations, through exploration have the potential to enable us to understand representations created by neural networks.  Through synthesis, and exploring the representations at each level of a neural network, we can start to gain insights into what sorts of representations if any are created by a network.  However, to date, very few explorations of audio networks for the purpose of dreaming or stylization have been done.
 
 %End to end learning, http://www.mirlab.org/conference_papers/International_Conference/ICASSP\%202014/papers/p7014-dieleman.pdf - spectrums still do better than raw audio.
 
 \small
-\bibliographystyle{IEEEtran}
-\bibliography{style-transfer}
+% Generated by IEEEtran.bst, version: 1.14 (2015/08/26)
+\begin{thebibliography}{1}
+\providecommand{\url}[1]{#1}
+\csname url@samestyle\endcsname
+\providecommand{\newblock}{\relax}
+\providecommand{\bibinfo}[2]{#2}
+\providecommand{\BIBentrySTDinterwordspacing}{\spaceskip=0pt\relax}
+\providecommand{\BIBentryALTinterwordstretchfactor}{4}
+\providecommand{\BIBentryALTinterwordspacing}{\spaceskip=\fontdimen2\font plus
+\BIBentryALTinterwordstretchfactor\fontdimen3\font minus
+  \fontdimen4\font\relax}
+\providecommand{\BIBforeignlanguage}[2]{{%
+\expandafter\ifx\csname l@#1\endcsname\relax
+\typeout{** WARNING: IEEEtran.bst: No hyphenation pattern has been}%
+\typeout{** loaded for the language `#1'. Using the pattern for}%
+\typeout{** the default language instead.}%
+\else
+\language=\csname l@#1\endcsname
+\fi
+#2}}
+\providecommand{\BIBdecl}{\relax}
+\BIBdecl
 
-\section{Supplementary Material}
+\bibitem{Ulyanov2016}
+D.~Ulyanov and V.~Lebedev, ``{Audio texture synthesis and style transfer},''
+  2016.
 
-\subsection{Input Data}
+\bibitem{Gatys}
+L.~A. Gatys, A.~S. Ecker, M.~Bethge, and C.~V. Sep, ``{A Neural Algorithm of
+  Artistic Style},'' \emph{Arxiv}, p. 211839, 2015.
 
-Each of the shallow untrained networks we used take as input a raw audio signal sampled at 22050 Hz with a frame size of 2048 samples, an alpha of 0.01, and use 150 iterations of the Adam optimizer.  We explored manipulations in sample rate including [44100, 22050, and 16000].  For frame size (DFT size was always set to half frame size with no padding or centering), we explored [1024, 2048, 4096, 8192], with hop sizes of [128, 256, 512].  The resulting projections from a discrete Fourier basis set were then sliced to half width to remove their symmetric projections.
+\bibitem{Ulyanov2016b}
+\BIBentryALTinterwordspacing
+D.~Ulyanov, V.~Lebedev, A.~Vedaldi, and V.~Lempitsky, ``{Texture Networks:
+  Feed-forward Synthesis of Textures and Stylized Images},'' 2016. [Online].
+  Available: \url{http://arxiv.org/abs/1603.03417}
+\BIBentrySTDinterwordspacing
 
-For the NSynth and WaveNet networks, we used the native sampling rate they were trained on, 16000 Hz.  For the shallow untrained networks, we explored a combination of networks that varied in their initial input processing, depth, and the number layers and information we used for content and stylization.  We tested networks which incorporated the real, imaginary, magnitude, and phase information of an audio source signal's DFT, as computed with a computational graph capable of automatic differentiation.  This enabled us to apply stylization by optimizing an input noise signal, while keeping the rest of the network untrained.
+\bibitem{Griffin1984}
+D.~W. Griffin and J.~S. Lim, ``{Signal Estimation from Modified Short-Time
+  Fourier Transform},'' \emph{IEEE Transactions on Acoustics, Speech, and
+  Signal Processing}, vol.~32, no.~2, pp. 236--243, 1984.
 
-\subsection{Network}
+\bibitem{Wyse2017}
+\BIBentryALTinterwordspacing
+L.~Wyse, ``{Audio Spectrogram Representations for Processing with Convolutional
+  Neural Networks},'' in \emph{Proceedings of the First International Workshop
+  on Deep Learning and Music joint with IJCNN}, vol.~1, no.~1, 2017, pp.
+  37--41. [Online]. Available: \url{http://arxiv.org/abs/1706.09559}
+\BIBentrySTDinterwordspacing
 
-Ulyanov's original stylization network uses depth-wise convolution as the first layer operating on the magnitudes.  We employ the same technique here, except using combinations of the real, imaginary, magnitude, and phase information as input, stacked along the height dimension.  For kernel sizes, we tried a variety of widths, including ${[4, 8, 16]}$, and for heights, depending on the number of components included we tried ${[1, H]}$, where $H$ is the total number of components included in the model.  For instance, for a model incorporating real and imaginary components, we set $H = 2$, and stacked the real and imaginary comopnents in rows. For number of layers, we tried ${[1, 2, 3]}$.  And finally, for representing phase, we tried the original phase, the phase differential, and the unwrapped phase differentials.  We used a stride of 1 and a ReLu activation for all convolutional layers, and followed the weight initialization used by Ulyanov's baseline audio stylization network.  Finally, we explored alphas including [0.1, 0.05, 0.01, 0.005, 0.001, 0.0005, 0.0001].
+\bibitem{Prusa2017}
+Z.~Prů{\v{s}}a and P.~Rajmic, ``{Toward High-Quality Real-Time Signal
+  Reconstruction from STFT Magnitude},'' \emph{IEEE Signal Processing Letters},
+  vol.~24, no.~6, pp. 892--896, 2017.
+
+\bibitem{Hershey2016}
+\BIBentryALTinterwordspacing
+S.~Hershey, S.~Chaudhuri, D.~P.~W. Ellis, J.~F. Gemmeke, A.~Jansen, C.~Moore,
+  M.~Plakal, D.~Platt, R.~A. Saurous, B.~Seybold, M.~Slaney, R.~J. Weiss,
+  K.~Wilson, R.~C. Moore, M.~Plakal, D.~Platt, R.~A. Saurous, B.~Seybold,
+  M.~Slaney, R.~J. Weiss, and K.~Wilson, ``{CNN Architectures for Large-Scale
+  Audio Classification},'' \emph{International Conference on Acoustics, Speech
+  and Signal Processing (ICASSP)}, pp. 4--8, 2016. [Online]. Available:
+  \url{http://arxiv.org/abs/1609.09430}
+\BIBentrySTDinterwordspacing
+
+\bibitem{Engel2017}
+\BIBentryALTinterwordspacing
+J.~Engel, C.~Resnick, A.~Roberts, S.~Dieleman, D.~Eck, K.~Simonyan, and
+  M.~Norouzi, ``{Neural Audio Synthesis of Musical Notes with WaveNet
+  Autoencoders},'' in \emph{Proceedings of the 34th International Conference on
+  Machine Learning}, 2017. [Online]. Available:
+  \url{http://arxiv.org/abs/1704.01279}
+\BIBentrySTDinterwordspacing
+
+\bibitem{Oord2016b}
+\BIBentryALTinterwordspacing
+A.~van~den Oord, S.~Dieleman, H.~Zen, K.~Simonyan, O.~Vinyals, A.~Graves,
+  N.~Kalchbrenner, A.~Senior, and K.~Kavukcuoglu, ``{WaveNet: A Generative
+  Model for Raw Audio},'' \emph{arxiv}, pp. 1--15, 2016. [Online]. Available:
+  \url{http://arxiv.org/abs/1609.03499}
+\BIBentrySTDinterwordspacing
+
+\end{thebibliography}
 
 \begin{figure}
 \centering
@@ -150,3 +221,4 @@ Ulyanov's original stylization network uses depth-wise convolution as the first 
 \caption{Example synthesis optimizing audio directly with both the source content and style audible.}
 \end{figure}
 \end{document}
+
