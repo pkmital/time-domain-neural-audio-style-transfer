@@ -1,7 +1,7 @@
 # Time Domain Neural Audio Style Transfer
 
-NIPS2017 "Time Domain Neural Audio Style Transfer" code repository
-[nips2017creativity.github.io](nips2017creativity.github.io)
+NIPS2017 "Time Domain Neural Audio Style Transfer" code repository  
+Presented at [nips2017creativity.github.io](nips2017creativity.github.io)
 
 Parag K. Mital
 
