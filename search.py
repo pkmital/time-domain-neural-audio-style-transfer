@@ -18,12 +18,13 @@ def get_path(model, output_path, content_filename, style_filename):
 
 
 def params():
-    n_fft = [2048, 4096]
-    n_layers = [1, 2]
-    n_filters = [1024, 2048, 4096]
-    hop_length = [128, 256, 512]
-    alpha = [0.1, 0.05, 0.01, 0.005, 0.001, 0.0005, 0.0001]
-    k_w = [4, 8, 16]
+    n_fft = [2048]
+    n_layers = [1]
+    n_filters = [4096]
+    hop_length = [256, 512]
+    alpha = [0.01]
+    k_w = [8]
+    norm = [True, False]
     input_features = [['mags'], ['mags', 'phase'], ['real', 'imag'],
                       ['real', 'imag', 'mags']]
     return locals()
@@ -39,16 +40,17 @@ def batch(content_path, style_path, output_path):
     n_layers = np.random.choice(params()['n_layers'])
     n_filters = np.random.choice(params()['n_filters'])
     hop_length = np.random.choice(params()['hop_length'])
+    norm = np.random.choice(params()['norm'])
     k_w = np.random.choice(params()['k_w'])
 
     # Run the Time Domain Model
     for f in params()['input_features']:
         fname = get_path('timedomain/input_features={}'.format(",".join(f)),
                          output_path, content_filename, style_filename)
-        output_filename = ('{},n_fft={},n_layers={},n_filters={},'
+        output_filename = ('{},n_fft={},n_layers={},n_filters={},norm={},'
                            'hop_length={},alpha={},k_w={}.wav'.format(
-                               fname, n_fft, n_layers, n_filters, hop_length,
-                               alpha, k_w))
+                               fname, n_fft, n_layers, n_filters, norm,
+                               hop_length, alpha, k_w))
         print(output_filename)
         if not os.path.exists(output_filename):
             timedomain.run(content_fname=content_filename,
@@ -59,6 +61,7 @@ def batch(content_path, style_path, output_path):
                            n_filters=n_filters,
                            hop_length=hop_length,
                            alpha=alpha,
+                           norm=norm,
                            k_w=k_w)
 
     # Run Original Uylanov Model

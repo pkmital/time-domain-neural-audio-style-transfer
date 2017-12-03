@@ -88,22 +88,27 @@ def instance_norm(x, epsilon=1e-5):
         return out
 
 
-def compute_inputs(x, freqs, n_fft, n_frames, input_features):
+def compute_inputs(x, freqs, n_fft, n_frames, input_features, norm=False):
+    if norm:
+        norm_fn = instance_norm
+    else:
+        def norm_fn(x):
+            return x
     freqs_tf = tf.constant(freqs, name="freqs", dtype='float32')
     inputs = {}
     with tf.variable_scope('real'):
-        inputs['real'] = instance_norm(tf.reshape(
+        inputs['real'] = norm_fn(tf.reshape(
             tf.matmul(x, tf.cos(freqs_tf)), [1, 1, n_frames, n_fft // 2]))
     with tf.variable_scope('imag'):
-        inputs['imag'] = instance_norm(tf.reshape(
+        inputs['imag'] = norm_fn(tf.reshape(
             tf.matmul(x, tf.sin(freqs_tf)), [1, 1, n_frames, n_fft // 2]))
     with tf.variable_scope('mags'):
-        inputs['mags'] = instance_norm(tf.reshape(
+        inputs['mags'] = norm_fn(tf.reshape(
             tf.sqrt(
                 tf.maximum(1e-15, inputs['real'] * inputs['real'] + inputs[
                     'imag'] * inputs['imag'])), [1, 1, n_frames, n_fft // 2]))
     with tf.variable_scope('phase'):
-        inputs['phase'] = instance_norm(tf.atan2(inputs['imag'], inputs['real']))
+        inputs['phase'] = norm_fn(tf.atan2(inputs['imag'], inputs['real']))
     with tf.variable_scope('unwrapped'):
         inputs['unwrapped'] = tf.py_func(
             unwrap, [inputs['phase']], tf.float32)
@@ -121,6 +126,7 @@ def compute_inputs(x, freqs, n_fft, n_frames, input_features):
 def compute_features(content,
                      style,
                      input_features,
+                     norm=False,
                      stride=1,
                      n_layers=1,
                      n_filters=4096,
@@ -143,7 +149,7 @@ def compute_features(content,
             np.linspace(0.0, 2 * np.pi / n_fft * (n_fft // 2), n_fft // 2),
             [1, n_fft // 2])
         freqs = np.dot(p, k)
-        inputs, net = compute_inputs(x, freqs, n_fft, n_frames, input_features)
+        inputs, net = compute_inputs(x, freqs, n_fft, n_frames, input_features, norm)
         sess.run(tf.initialize_all_variables())
         content_feature = net.eval(feed_dict={x: content_tf})
         content_features.append(content_feature)
@@ -186,6 +192,7 @@ def compute_stylization(kernels,
                         style_gram,
                         freqs,
                         input_features,
+                        norm=False,
                         stride=1,
                         n_layers=1,
                         n_fft=1024,
@@ -198,7 +205,7 @@ def compute_stylization(kernels,
         x = tf.Variable(
             np.random.randn(n_frames, n_samples).astype(np.float32) * 1e-3,
             name="x")
-        inputs, net = compute_inputs(x, freqs, n_fft, n_frames, input_features)
+        inputs, net = compute_inputs(x, freqs, n_fft, n_frames, input_features, norm)
         content_loss = alpha * 2 * tf.nn.l2_loss(net - content_features[0])
         feats = tf.reshape(inputs['mags'], (-1, n_fft // 2))
         gram = tf.matmul(tf.transpose(feats), feats) / (n_frames)
@@ -249,6 +256,7 @@ def compute_stylization(kernels,
 def run(content_fname,
         style_fname,
         output_fname,
+        norm=False,
         input_features=['real', 'imag', 'mags'],
         n_fft=4096,
         n_layers=1,
@@ -278,6 +286,7 @@ def run(content_fname,
         content=content,
         style=style,
         input_features=input_features,
+        norm=norm,
         stride=stride,
         n_fft=n_fft,
         n_layers=n_layers,
@@ -289,6 +298,7 @@ def run(content_fname,
         kernels=kernels,
         freqs=freqs,
         input_features=input_features,
+        norm=norm,
         n_samples=n_samples,
         n_frames=n_frames,
         n_fft=n_fft,
