@@ -16,27 +16,27 @@ Python 3.4+ required (Magenta is required for NSynth and WaveNet models only; bu
 
 # Code
 
-The `models` folder shows three different modules, `fourier` shows the novel work showing how to combine the `real`, `imaginary`, and `magnitudes` of a discrete fourier transform for performing time-domain audio style transfer.  The `original` module includes the approach by Ulyanov.  Finally, the `nsynth` module includes the NSynth Autoencoder, showing how to use the encoder or the decoder as approaches to audio stylization, though I was unable to perform any successful stylization using this approach.
+The `models` folder shows three different modules, `timedomain` shows the novel work showing how to combine the `real`, `imaginary`, and `magnitudes` of a discrete timedomain transform for performing time-domain audio style transfer.  The `uylanov` module includes the approach by Ulyanov et al.  Finally, the `nsynth` module includes the NSynth Autoencoder, showing how to use the encoder or the decoder as approaches to audio stylization, though I was unable to perform any successful stylization using this approach.
 
 # Usage
 
-You can use any of the modules in the models folder, `fourier`, `original`, or `nsynth` from the command line like so:
+You can use any of the modules in the models folder, `timedomain`, `original`, or `nsynth` from the command line like so:
 
 ```
-python models/fourier.py
-usage: fourier.py [-h] -s STYLE -c CONTENT -o OUTPUT [-m MODE]
+python models/timedomain.py
+usage: timedomain.py [-h] -s STYLE -c CONTENT -o OUTPUT [-m MODE]
 ```
 
 These take paths to the style or content files or paths (when mode is 'batch'), e.g.:
 
 ```
-python models/fourier.py -s /path/to/style.wav -c /path/to/content.wav -o /path/to/output.wav
+python models/timedomain.py -s /path/to/style.wav -c /path/to/content.wav -o /path/to/output.wav
 ```
 
 or:
 
 ```
-python models/fourier.py -s /path/to/style/wavs/folder -c /path/to/content/wavs/folder -o /path/to/output/wavs/folder -m batch
+python models/timedomain.py -s /path/to/style/wavs/folder -c /path/to/content/wavs/folder -o /path/to/output/wavs/folder -m batch
 ```
 
 # Audio Samples
@@ -45,5 +45,5 @@ This repository also includes audio samples from Robert Thomas (`target/male-tal
 
 # Example Outputs
 
-The folder `examples` includes syntheses using the `models/fourier` module and the original Ulyanov network in `models/original`, and were created using the script in the root of the repo, `search.py`.
+The folder `examples` includes syntheses using the `models/timedomain` module and the original Ulyanov network in `models/uylanov`, and were created using the script in the root of the repo, `search.py`.
 `
