@@ -115,10 +115,15 @@ def compute_inputs(x, freqs, n_fft, n_frames, input_features, norm=False):
     with tf.variable_scope('unwrapped_difference'):
         inputs['unwrapped_difference'] = (tf.slice(
                 inputs['unwrapped'],
-                [0, 0, 0, 0], [-1, -1, n_fft // 2 - 1, -1]) -
+                [0, 0, 0, 1], [-1, -1, -1, n_fft // 2 - 1]) -
             tf.slice(
                 inputs['unwrapped'],
-                [0, 0, 1, 0], [-1, -1, n_fft // 2 - 1, -1]))
+                [0, 0, 0, 0], [-1, -1, -1, n_fft // 2 - 1]))
+    if 'unwrapped_difference' in input_features:
+        for k, v in input_features:
+            if k is not 'unwrapped_difference':
+                inputs[k] = tf.slice(
+                        v, [0, 0, 0, 0], [-1, -1, -1, n_fft // 2 - 1])
     net = tf.concat([inputs[i] for i in input_features], 1)
     return inputs, net
 
