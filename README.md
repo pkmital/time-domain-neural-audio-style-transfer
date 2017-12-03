@@ -16,7 +16,11 @@ Python 3.4+ required (Magenta is required for NSynth and WaveNet models only; bu
 
 # Code
 
-The `models` folder shows three different modules, `timedomain` shows the novel work showing how to combine the `real`, `imaginary`, and `magnitudes` of a discrete timedomain transform for performing time-domain audio style transfer.  The `uylanov` module includes the approach by Ulyanov et al.  Finally, the `nsynth` module includes the NSynth Autoencoder, showing how to use the encoder or the decoder as approaches to audio stylization, though I was unable to perform any successful stylization using this approach.
+The `models` folder shows three different modules, `timedomain` shows how to combine the different input features described in the paper, including `real`, `imaginary`, and `magnitudes` and `phases` of a discrete timedomain transform for performing time-domain audio style transfer.  Have a look at the `input_features` argument for specifying different input features to use for the time domain style transfer algorithm.   
+
+The `uylanov` module includes the approach by Ulyanov et al.  
+
+Finally, the `nsynth` module includes the NSynth Autoencoder, showing how to use the encoder or the decoder as approaches to audio stylization, though I was unable to perform any successful stylization using this approach.
 
 # Usage
 
