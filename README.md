@@ -24,7 +24,7 @@ Finally, the `nsynth` module includes the NSynth Autoencoder, showing how to use
 
 # Usage
 
-You can use any of the modules in the models folder, `timedomain`, `original`, or `nsynth` from the command line like so:
+You can use any of the modules in the models folder, `timedomain`, `uylanov`, or `nsynth` from the command line like so:
 
 ```
 python models/timedomain.py
