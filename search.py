@@ -1,22 +1,10 @@
-# make interface for each model type
-# - original, dct, wavenet, nsynth
-# parameters for each model type
-# - original:
-#     - layers = [1, 2, 3]
-#     - frame size = [512, 2048]
-#     - kernel size = [5, 15, 30]
-# - dct:
-#     - features = [[real, imag], [real, imag, mag],
-#                   [mag, phase], [mag, phase diff],
-#                   [mag, unwrapped phase diff]]
-# - wavenet:
-#
-# - nsynth:
-#
+"""NIPS2017 "Time Domain Neural Audio Style Transfer" code repository
+Parag K. Mital
+"""
 import os
 import glob
 import numpy as np
-from models import fourier, nsynth, original
+from models import timedomain, uylanov
 
 
 def get_path(model, output_path, content_filename, style_filename):
@@ -36,6 +24,8 @@ def params():
     hop_length = [128, 256, 512]
     alpha = [0.1, 0.05, 0.01, 0.005, 0.001, 0.0005, 0.0001]
     k_w = [4, 8, 16]
+    input_features = [['mags'], ['mags', 'phase'], ['real', 'imag'],
+                      ['real', 'imag', 'mags']]
     return locals()
 
 
@@ -50,22 +40,46 @@ def batch(content_path, style_path, output_path):
     n_filters = np.random.choice(params()['n_filters'])
     hop_length = np.random.choice(params()['hop_length'])
     k_w = np.random.choice(params()['k_w'])
-    # Run Fourier Model
-    fname = get_path('fourier', output_path, content_filename, style_filename)
+
+    # Run the Time Domain Model
+    for f in params()['input_features']:
+        fname = get_path('timedomain/input_features={}'.format(",".join(f)),
+                         output_path, content_filename, style_filename)
+        output_filename = ('{},n_fft={},n_layers={},n_filters={},'
+                           'hop_length={},alpha={},k_w={}.wav'.format(
+                               fname, n_fft, n_layers, n_filters, hop_length,
+                               alpha, k_w))
+        print(output_filename)
+        if not os.path.exists(output_filename):
+            timedomain.run(content_fname=content_filename,
+                           style_fname=style_filename,
+                           output_fname=output_filename,
+                           n_fft=n_fft,
+                           n_layers=n_layers,
+                           n_filters=n_filters,
+                           hop_length=hop_length,
+                           alpha=alpha,
+                           k_w=k_w)
+
+    # Run Original Uylanov Model
+    fname = get_path('uylanov', output_path, content_filename, style_filename)
     output_filename = ('{},n_fft={},n_layers={},n_filters={},'
                        'hop_length={},alpha={},k_w={}.wav'.format(
-                           fname, n_fft, n_layers, n_filters, hop_length, alpha, k_w))
+                           fname, n_fft, n_layers, n_filters, hop_length, alpha,
+                           k_w))
     print(output_filename)
     if not os.path.exists(output_filename):
-        fourier.run(content_fname=content_filename,
-                    style_fname=style_filename,
-                    output_fname=output_filename,
+        uylanov.run(content_filename,
+                    style_filename,
+                    output_filename,
                     n_fft=n_fft,
                     n_layers=n_layers,
                     n_filters=n_filters,
                     hop_length=hop_length,
                     alpha=alpha,
                     k_w=k_w)
+
+    # These only produce noise so they are commented
     # # Run NSynth Encoder Model
     # output_filename = get_path('nsynth-encoder', output_path, content_filename,
     #                            style_filename)
@@ -100,22 +114,6 @@ def batch(content_path, style_path, output_path):
     #                hop_length=hop_length,
     #                alpha=alpha,
     #                k_w=k_w)
-    # Run Original Model
-    fname = get_path('original', output_path, content_filename, style_filename)
-    output_filename = ('{},n_fft={},n_layers={},n_filters={},'
-                       'hop_length={},alpha={},k_w={}.wav'.format(
-                           fname, n_fft, n_layers, n_filters, hop_length, alpha, k_w))
-    print(output_filename)
-    if not os.path.exists(output_filename):
-        original.run(content_filename,
-                     style_filename,
-                     output_filename,
-                     n_fft=n_fft,
-                     n_layers=n_layers,
-                     n_filters=n_filters,
-                     hop_length=hop_length,
-                     alpha=alpha,
-                     k_w=k_w)
 
 
 if __name__ == '__main__':
