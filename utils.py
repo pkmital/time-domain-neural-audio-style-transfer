@@ -7,6 +7,7 @@ from scipy.signal import hann
 import librosa
 import matplotlib
 import matplotlib.pyplot as plt
+import os
 
 
 def limiter(signal,
@@ -100,13 +101,13 @@ def idft_np(re, im, hop_size=256, fft_size=512):
 def rainbowgram(path,
                 ax,
                 peak=70.0,
-                use_cqt=True,
-                n_fft=512,
+                use_cqt=False,
+                n_fft=1024,
                 hop_length=256,
                 sr=22050,
                 over_sample=4,
                 res_factor=0.8,
-                octaves=6,
+                octaves=5,
                 notes_per_octave=10):
     audio = librosa.load(path, sr=sr)[0]
     if use_cqt:
@@ -183,46 +184,16 @@ def rainbowgrams(list_of_paths,
         fig.savefig(filename='{}.png'.format(saveto))
 
 
-def plot_target():
-    files = glob.glob('target/**/*.wav', recursive=True)
-    for f in files:
-        rainbowgrams(
-            [f],
-            saveto='target/{}.png'.format(f.split('/')[-1]),
-            figsize=(20, 5),
-            rows=1,
-            cols=1)
-        plt.close('all')
-
-
-def plot_corpus():
-    files = glob.glob('corpus/**/*.wav', recursive=True)
-    for f in files:
-        rainbowgrams(
-            [f],
-            saveto='corpus/{}.png'.format(f.split('/')[-1]),
-            figsize=(20, 5),
-            rows=1,
-            cols=1)
-        plt.close('all')
-
-
-def plot_results():
-    types = ['original', 'test', 'fourier']
-    files = glob.glob('results/**/*.wav', recursive=True)
-    results = {}
-    for type_i in types:
-        results[type_i] = [
-            f.split('results/{}/'.format(type_i))[1] for f in files
-            if type_i in f
-        ]
-    intersection = list(
-        set(results['test']) & set(results['fourier']) & set(results[
-            'original']))
-    for el in intersection:
-        rainbowgrams(
-            ['results/{}/{}'.format(t, el) for t in types],
-            saveto='results/{}.png'.format(el),
-            rows=3,
-            cols=1)
-        plt.close('all')
+def plot_rainbowgrams():
+    for root in ['target', 'corpus', 'results']:
+        files = glob.glob('{}/**/*.wav'.format(root), recursive=True)
+        for f in files:
+            fname = '{}.png'.format(f)
+            if not os.path.exists(fname):
+                rainbowgrams(
+                    [f],
+                    saveto=fname,
+                    figsize=(20, 5),
+                    rows=1,
+                    cols=1)
+                plt.close('all')
