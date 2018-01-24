@@ -4,7 +4,7 @@ Parag K. Mital
 import os
 import glob
 import numpy as np
-from models import timedomain, uylanov
+from audio_style_transfer.models import timedomain, uylanov
 
 
 def get_path(model, output_path, content_filename, style_filename):
