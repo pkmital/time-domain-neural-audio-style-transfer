@@ -1,0 +1,1 @@
+These clips were generously contributed to this work by their authors and are licensed under a Creative Commons Attribution-NonCommercial 4.0 International License. That means these clips are not for commercial usage. Further, any sharing of these clips must contain attribution to their authors, and must be shared under the same license.
