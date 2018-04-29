@@ -4,7 +4,7 @@ NIPS2017 "Time Domain Neural Audio Style Transfer" code repository
 https://arxiv.org/abs/1711.11160  
 Parag K. Mital  
   
-Presented at [nips2017creativity.github.io](nips2017creativity.github.io)
+Presented at [https://nips2017creativity.github.io](https://nips2017creativity.github.io)
 
 # Introduction
 
