@@ -6,6 +6,8 @@ Parag K. Mital
   
 Presented at [https://nips2017creativity.github.io](https://nips2017creativity.github.io)
 
+Colab: https://colab.research.google.com/drive/18_DckMGM-fsSthIqZI9sOAlY6I3plDLD
+
 # Introduction
 
   A recently published method for audio style transfer has shown how to extend the process of image style transfer to audio.  This method synthesizes audio "content" and "style" independently using the magnitudes of a short time Fourier transform, shallow convolutional networks with randomly initialized filters, and iterative phase reconstruction with Griffin-Lim.  In this work, we explore whether it is possible to directly optimize a time domain audio signal, removing the process of phase reconstruction and opening up possibilities for real-time applications and higher quality syntheses.  We explore a variety of style transfer processes on neural networks that operate directly on time domain audio signals and demonstrate one such network capable of audio stylization.
