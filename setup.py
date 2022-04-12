@@ -20,7 +20,8 @@ AUTHOR = 'Parag Mital'
 
 # What packages are required for this module to be executed?
 REQUIRED = [
-    'tensorflow', 'librosa', 'magenta'
+    # 'tensorflow-gpu<2.0.0', 'librosa<0.8.0',
+    # 'magenta'
 ]
 
 # The rest you shouldn't have to touch too much :)

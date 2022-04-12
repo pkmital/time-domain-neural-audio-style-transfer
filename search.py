@@ -18,19 +18,18 @@ def get_path(model, output_path, content_filename, style_filename):
 
 
 def params():
-    n_fft = [2048]
-    n_layers = [1]
-    n_filters = [4096]
-    hop_length = [256, 512]
-    alpha = [0.01]
-    k_w = [8]
+    n_fft = [2048, 4096, 8196]
+    n_layers = [1, 2, 4]
+    n_filters = [128, 2048, 4096]
+    hop_length = [128, 256, 512]
+    alpha = [0.1, 0.01, 0.005]
+    k_w = [4, 8, 12]
     norm = [True, False]
-    input_features = [['mags'], ['mags', 'phase'], ['real', 'imag'],
-                      ['real', 'imag', 'mags']]
+    input_features = [['mags'], ['mags', 'phase'], ['real', 'imag'], ['real', 'imag', 'mags']]
     return locals()
 
 
-def batch(content_path, style_path, output_path):
+def batch(content_path, style_path, output_path, run_timedomain=True, run_uylanov=False):
     content_files = glob.glob('{}/*.wav'.format(content_path))
     style_files = glob.glob('{}/*.wav'.format(style_path))
     content_filename = np.random.choice(content_files)
@@ -44,43 +43,45 @@ def batch(content_path, style_path, output_path):
     k_w = np.random.choice(params()['k_w'])
 
     # Run the Time Domain Model
-    for f in params()['input_features']:
-        fname = get_path('timedomain/input_features={}'.format(",".join(f)),
-                         output_path, content_filename, style_filename)
-        output_filename = ('{},n_fft={},n_layers={},n_filters={},norm={},'
+    if run_timedomain:
+        for f in params()['input_features']:
+            fname = get_path('timedomain/input_features={}'.format(",".join(f)),
+                             output_path, content_filename, style_filename)
+            output_filename = ('{},n_fft={},n_layers={},n_filters={},norm={},'
+                               'hop_length={},alpha={},k_w={}.wav'.format(
+                                   fname, n_fft, n_layers, n_filters, norm,
+                                   hop_length, alpha, k_w))
+            print(output_filename)
+            if not os.path.exists(output_filename):
+                timedomain.run(content_fname=content_filename,
+                               style_fname=style_filename,
+                               output_fname=output_filename,
+                               n_fft=n_fft,
+                               n_layers=n_layers,
+                               n_filters=n_filters,
+                               hop_length=hop_length,
+                               alpha=alpha,
+                               norm=norm,
+                               k_w=k_w)
+
+    if run_uylanov:
+        # Run Original Uylanov Model
+        fname = get_path('uylanov', output_path, content_filename, style_filename)
+        output_filename = ('{},n_fft={},n_layers={},n_filters={},'
                            'hop_length={},alpha={},k_w={}.wav'.format(
-                               fname, n_fft, n_layers, n_filters, norm,
-                               hop_length, alpha, k_w))
+                               fname, n_fft, n_layers, n_filters, hop_length, alpha,
+                               k_w))
         print(output_filename)
         if not os.path.exists(output_filename):
-            timedomain.run(content_fname=content_filename,
-                           style_fname=style_filename,
-                           output_fname=output_filename,
-                           n_fft=n_fft,
-                           n_layers=n_layers,
-                           n_filters=n_filters,
-                           hop_length=hop_length,
-                           alpha=alpha,
-                           norm=norm,
-                           k_w=k_w)
-
-    # Run Original Uylanov Model
-    fname = get_path('uylanov', output_path, content_filename, style_filename)
-    output_filename = ('{},n_fft={},n_layers={},n_filters={},'
-                       'hop_length={},alpha={},k_w={}.wav'.format(
-                           fname, n_fft, n_layers, n_filters, hop_length, alpha,
-                           k_w))
-    print(output_filename)
-    if not os.path.exists(output_filename):
-        uylanov.run(content_filename,
-                    style_filename,
-                    output_filename,
-                    n_fft=n_fft,
-                    n_layers=n_layers,
-                    n_filters=n_filters,
-                    hop_length=hop_length,
-                    alpha=alpha,
-                    k_w=k_w)
+            uylanov.run(content_filename,
+                        style_filename,
+                        output_filename,
+                        n_fft=n_fft,
+                        n_layers=n_layers,
+                        n_filters=n_filters,
+                        hop_length=hop_length,
+                        alpha=alpha,
+                        k_w=k_w)
 
     # These only produce noise so they are commented
     # # Run NSynth Encoder Model

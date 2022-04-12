@@ -146,7 +146,9 @@ def compute_features(content,
     kernels = []
     content_features = []
     style_features = []
-    with g.as_default(), g.device('/cpu:0'), tf.Session() as sess:
+    config_proto = tf.ConfigProto()
+    config_proto.gpu_options.allow_growth = True
+    with g.as_default(), g.device('/cpu:0'), tf.Session(config=config_proto) as sess:
         x = tf.placeholder('float32', [n_frames, n_samples], name="x")
         p = np.reshape(
             np.linspace(0.0, n_samples - 1, n_samples), [n_samples, 1])
